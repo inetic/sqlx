@@ -48,6 +48,8 @@ impl Notify {
     }
 
     fn wait(&self) {
+        // We only want to wait until the lock is available again.
+        #[allow(let_underscore_lock)]
         let _ = self
             .condvar
             .wait_while(self.mutex.lock().unwrap(), |fired| !*fired)

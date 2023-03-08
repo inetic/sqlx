@@ -127,7 +127,13 @@ futures-intrusive = "0.4.0"
 futures-util = { version = "0.3.19", default-features = false, features = ["alloc", "sink"] }
 # used by the SQLite worker thread to block on the async mutex that locks the database handle
 futures-executor = { version = "0.3.19", optional = true }
-flume = { version = "0.10.9", optional = true, default-features = false, features = ["async"] }
+# Flume 0.10.14 and prior versions had a race condition which was fixed here
+# https://github.com/zesterer/flume/pull/121
+# and documented here
+# https://github.com/zesterer/flume/issues/120
+# Until flume developers merge the pull request and create a new release we need
+# to use the patch from git.
+flume = { git = "https://github.com/inetic/flume", branch = "async-race", optional = true, default-features = false, features = ["async"] }
 generic-array = { version = "0.14.4", default-features = false, optional = true }
 hex = "0.4.3"
 hmac = { version = "0.12.0", default-features = false, optional = true }
